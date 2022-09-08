@@ -1,0 +1,17 @@
+#! /bin/bash
+
+main() {
+    if (( $# == 2 )); then
+        rotary "$1" "$2"
+        exit $?
+    fi
+    for i in $(seq 25); do
+        rotary "$1" "$i"
+    done
+}
+
+rotary() {
+    printf "%-2d %s\n" "${2}" $(echo ${1} | tr $(printf "%*s" ${2} "" | tr ' ' .)a-z a-za-z)
+}
+
+main "$@"
