@@ -1,0 +1,3 @@
+1. `scp -P 4242 ./level06/Ressources/playload level06@192.168.56.102:/tmp`
+
+2. `echo './level06 /tmp/playload 'getflag'`
