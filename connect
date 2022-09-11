@@ -1,0 +1,25 @@
+#! /bin/bash
+
+declare -r default="level00"
+declare -r login=${1:-level00}
+declare    pass="$default"
+
+main() {
+    if [[ "$login" != "$default" ]]; then
+        pass=$(find_pass "$login") ||
+            { printf "no flag find for '%s'.\nexit.\n" "$login"; exit 1; }
+    fi
+    echo $pass
+    echo $pass | xclip -selection c -in
+    ssh "$login@192.168.56.101" -p 4242 
+}
+
+find_pass() {
+    local number=$(( 10#${1##*[a-z]} - 1))
+    local dir=${1%%[0-9]*}$( printf "%02d" $number)
+
+    cat "./$dir/flag" 2> /dev/null
+    return $?
+}
+
+main "$@"
