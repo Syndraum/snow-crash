@@ -5,11 +5,11 @@
     #   exit
     # if "token" in argv[1]
     #   exit
-    # if not open
-    #   exit
-    # if not read
-    #   exit
-    # if not write stdout
+    # try
+    #   open argv[1]
+    #   read rgv[1]
+    #   write stdout
+    # catch
     #   exit
 
 2. `./level08 token`
