@@ -1,0 +1,12 @@
+#! /bin/bash
+
+declare -r lib_name="fakelib.so"
+declare -r output="/tmp/$lib_name"
+
+gcc -shared lib.c -o $output
+export LD_PRELOAD="$output"
+./level09 "token"
+#env | grep PRE
+
+# rm -rf $output
+export LD_PRELOAD=
