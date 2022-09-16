@@ -9,7 +9,7 @@ declare    pass="$default"
 main() {
     if [[ "$login" != "$default" ]]; then
         pass=$(find_pass "$login") ||
-            { printf "no flag find for '%s'.\nexit.\n" "$login"; exit 1; }
+            { printf "flag not find for '%s' user.\nexit.\n" "$login"; exit 1; }
     fi
     echo $pass | xclip -selection c -in
     ssh "$login@$IP" -p 4242 

