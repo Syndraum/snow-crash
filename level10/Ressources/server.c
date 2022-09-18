@@ -10,23 +10,25 @@
 
 #define BUFFER_SIZE 255
 #define PIVOT 1
+#define MAX_CLIENT 32
 
 typedef unsigned int uint;
 
 typedef struct	s_client {
+	size_t	id;
 	int		fd;
+	ssize_t		read;
 	uint	len;
-	struct	sockaddr_in addr;
-	char	buffer[BUFFER_SIZE + 1];
-	int		read;
+	struct sockaddr_in	addr;
+	char				buffer[BUFFER_SIZE + 1];
 }				t_client;
 
 typedef struct	s_server {
 	int	fd;
-	int	nb_fd;
+	size_t	nb_fd;
 	int	run;
 	struct sockaddr_in addr;
-	struct pollfd	set[3];
+	struct pollfd	set[2 + MAX_CLIENT];
 }				t_server;
 
 void add_pollfd(t_server *server, int fd) {
@@ -39,8 +41,14 @@ void add_pollfd(t_server *server, int fd) {
 }
 
 void remove_client(t_server *server, t_client *client) {
+	size_t i;
+
 	close(client->fd);
-	client->fd = 0;
+	for (i = client->id; i < server->nb_fd - 2 -1; i++)
+	{
+		client[i] = client[i + 1];
+		server->set[client->id + 2] = server->set[client->id + 2 + 1];
+	}
 	(server->nb_fd)--;
 	printf("remove client\n");
 }
@@ -55,7 +63,7 @@ void create_server(t_server *server) {
 	server->addr.sin_port = htons(6969);
 	if (bind(server->fd, (const struct sockaddr *)&(server->addr), sizeof(server->addr)) == -1 )
 		err(2, "bind");
-	if (listen(server->fd, 5) == -1)
+	if (listen(server->fd, MAX_CLIENT) == -1)
 		err(3, "listen");
 	server->run = 1;
 }
@@ -72,39 +80,44 @@ void read_stdin(t_server *server) {
 	}
 }
 
-void connection(t_server *server, t_client *client) {
+void connection(t_server *server, t_client *clients) {
+	t_client *client = clients + server->nb_fd - 2;
+
 	bzero(client, sizeof(*client));
 	client->fd = accept(server->fd, (struct sockaddr *)&client->addr, &(client->len));
-	add_pollfd(server, client->fd);
 	if (client->fd == -1)
 		err(4, "accept");
+	client->id = server->nb_fd - 2;
+	add_pollfd(server, client->fd);
 	printf("new client accepted\n");
 }
 
 void read_msg(t_client *client, t_server *server) {
 	client->read = recv(client->fd, client->buffer, BUFFER_SIZE, 0);
 	if (client->read == -1)
-		err(5, "accept");
+		err(5, "recv");
 	if (client->read == 0) {
 		remove_client(server, client);
 		return;
 	}
-	printf("read %d character from client\n=========\n", client->read);
+	printf("read %ld character from client\n===========================\n", client->read);
 	write(1, client->buffer, client->read);
-	printf("\n=========\n");
+	printf("\n===========================\n");
 }
 
 void	clean_revent(t_server *server) {
 	size_t i;
 	
-	for (i = 0; i < 3; i++)
+	for (i = 0; i < server->nb_fd; i++)
 		(server->set + i)->revents = 0;
 }
 
-void wait_client(t_server *server, t_client *client) {
+void wait_client(t_server *server, t_client *clients) {
+	t_client	*client = 0;
+	size_t i;
+
 	add_pollfd(server, 0);
 	add_pollfd(server, server->fd);
-
 	printf("wait for client...\n");
 	while (server->run)
 	{
@@ -113,25 +126,34 @@ void wait_client(t_server *server, t_client *client) {
 		if (server->set->revents & POLLIN)
 			read_stdin(server);
 		if ((server->set + 1)->revents & POLLIN)
-			connection(server, client);
-		if (server->nb_fd > PIVOT && (server->set + 2)->revents & POLLIN)
-			read_msg(client, server);
+			connection(server, clients);
+		for (i = 2; i < server->nb_fd; i++)
+		{
+			client = clients + i - 2;
+			if ((server->set + i)->revents & POLLIN) {
+				read_msg(client, server);
+				if (client->read == 0)
+					i--;
+			}
+		}
 		clean_revent(server);
 	}
 }
 
-void close_server(t_server *server, t_client *client) {
-	if (client->fd)
-		close(client->fd);
-	close(server->fd);
+void close_server(t_server *server) {
+	size_t i;
+	
+	for (i = 1; i < server->nb_fd; i++)
+		close(server->set[i].fd);
 	printf("close server\n");
 }
 
 int main () {
 	t_server server;
-	t_client client;
+	t_client clients[MAX_CLIENT];
 
 	create_server(&server);
-	wait_client(&server, &client);
-	close_server(&server, &client);
+	wait_client(&server, clients);
+	close_server(&server);
+	return (0);
 }
