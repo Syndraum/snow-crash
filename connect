@@ -1,18 +1,31 @@
 #! /bin/bash
 
 IP="192.168.56.102"
+PORT=4242
 
 declare -r default="level00"
 declare -r login=${1:-level00}
 declare    pass="$default"
 
 main() {
+    if [[ "$0" == "./connect" ]]; then
+        connect "$1" "$2"
+    elif [[ "$0" == "./send" ]]; then
+        send "$1" "$2"
+    fi
+}
+
+# init_key() {
+#     if 
+#     ssh-keygen -t rsa -b 2048 -f ~/.ssh/snow-crash -N ""
+# }
+
+get_pass() {
     if [[ "$login" != "$default" ]]; then
         pass=$(find_pass "$login") ||
             { printf "flag not find for '%s' user.\nexit.\n" "$login"; exit 1; }
     fi
     echo $pass | xclip -selection c -in
-    ssh "$login@$IP" -p 4242 
 }
 
 find_pass() {
@@ -21,6 +34,24 @@ find_pass() {
 
     cat "./$dir/flag" 2> /dev/null
     return $?
+}
+
+connect() {
+    if [[ -z "$1" ]]; then
+        printf "usage: connect login [command]\n"
+        exit 1
+    fi
+    get_pass
+    ssh "$1@$IP" -p "$PORT" "$2"
+}
+
+send() {
+    if [[ -z "$2" ]]; then
+        printf "usage; send login file\n"
+        exit 1
+    fi
+    get_pass
+    scp -P "$PORT" "$2" "${1}@${IP}:/home/user/${1}"
 }
 
 main "$@"
