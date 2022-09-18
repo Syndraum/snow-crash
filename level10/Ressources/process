@@ -1,2 +1,6 @@
+x. `scp -P 4242 ./level10/Ressources/server.c level09@192.168.56.101:/home/user/level09`
+
+x. `scp -P 4242 ./level10/Ressources/race level10@192.168.56.101:/home/user/level10`
+
 x. `su flag10` - pass: woupa2yuojeeaaed06riuj63c
    getflag

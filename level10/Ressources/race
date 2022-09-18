@@ -15,6 +15,6 @@ execute() {
 rm -rf "$file"
 echo "bonjour" > "$file"
 execute "$file" &
-sleep 0.3
+sleep 0.1
 ln -sf "$target" "$file"
 wait $(jobs -p | sed -n '1p')
