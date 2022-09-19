@@ -22,7 +22,7 @@ init_key() {
     local -r ssh_path="${SSH_DIR}${ssh_key}"
     local    has_key=$(ls ${ssh_path} 2> /dev/null)
 
-    if [[ -z "$1" ]]; then
+    if [[ -z "$2" ]]; then
         printf "usage: init_key login key_name\n"
         exit 1
     fi
