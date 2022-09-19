@@ -1,13 +1,15 @@
 #! /bin/bash
 
-IP="192.168.56.102"
-PORT=4242
-
-declare -r default="level00"
-declare -r login=${1:-level00}
-declare    pass="$default"
+declare -r IP="192.168.56.101"
+declare -r PORT=4242
+declare -r SSH_DIR="${HOME}/.ssh/"
 
 main() {
+    declare -r default="level00"
+    declare -r login=${1:-level00}
+    declare    pass="$default"
+
+    # init_key
     if [[ "$0" == "./connect" ]]; then
         connect "$1" "$2"
     elif [[ "$0" == "./send" ]]; then
@@ -15,10 +17,18 @@ main() {
     fi
 }
 
-# init_key() {
-#     if 
-#     ssh-keygen -t rsa -b 2048 -f ~/.ssh/snow-crash -N ""
-# }
+init_key() {
+    local -r ssh_key=${1:-snow-crash}
+    local -r ssh_path="${SSH_DIR}${ssh_key}"
+    local    has_key=$(ls ${ssh_path} 2> /dev/null)
+
+    if [[ -z "$has_key" ]];then
+        ssh-keygen -q -t ed25519 -f "$ssh_path" -N "test"
+    fi
+    get_pass
+    cat "${ssh_path}.pub" | ssh "${login}@${IP}" -p "$PORT" "chmod 777 . && mkdir -p ~/.ssh && chmod 755 ~/.ssh && cat > ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+    # ssh-copy-id -i "${ssh_path}.pub" -p "$PORT" "${login}@${IP}"
+}
 
 get_pass() {
     if [[ "$login" != "$default" ]]; then
@@ -42,7 +52,7 @@ connect() {
         exit 1
     fi
     get_pass
-    ssh "$1@$IP" -p "$PORT" "$2"
+    ssh "${1}@${IP}" -p "$PORT" "$2"
 }
 
 send() {
