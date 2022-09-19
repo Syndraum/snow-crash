@@ -18,7 +18,7 @@ declare -r PORT=4242
 declare -r SSH_DIR="${HOME}/.ssh/"
 
 init_key() {
-    local -r ssh_key=${1:-snow-crash}
+    local -r ssh_key=${2:-snow-crash}
     local -r ssh_path="${SSH_DIR}${ssh_key}"
     local    has_key=$(ls ${ssh_path} 2> /dev/null)
 
