@@ -1,11 +1,7 @@
 #! /bin/bash
 
-# declare -r login=${1:-level00}
-
-source "./automate"
-
 main() {
-    init_key "$1" "snow-crash"
+    init_key "$1" "$SSH_HOST"
     if [[ "$0" == "./connect" ]]; then
         connect "$1" "$2"
     elif [[ "$0" == "./send" ]]; then
@@ -13,12 +9,16 @@ main() {
     fi
 }
 
-declare -r IP="192.168.56.102"
+declare -r SSH_HOST="snow-crash"
+declare -r IP="192.168.56.101"
 declare -r PORT=4242
 declare -r SSH_DIR="${HOME}/.ssh/"
+declare -r SSH_CONFIG=".config"
+
+declare -r SSH_OPTION="-F $SSH_CONFIG"
 
 init_key() {
-    local -r ssh_key=${2:-snow-crash}
+    local -r ssh_key="$2"
     local -r ssh_path="${SSH_DIR}${ssh_key}"
     local    has_key=$(ls ${ssh_path} 2> /dev/null)
 
@@ -27,10 +27,23 @@ init_key() {
         exit 1
     fi
     if [[ -z "$has_key" ]];then
-        ssh-keygen -f "$ssh_path" -N ""
+        ssh-keygen -t rsa -f "$ssh_path" -N ""
     fi
+    new_ssh_conf "$SSH_CONFIG"
     get_pass "$1"
-    cat "${ssh_path}.pub" | ssh "${1}@${IP}" -p "$PORT" "chmod 755 . && mkdir -p ~/.ssh && chmod 755 ~/.ssh && cat > ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+    cat "${ssh_path}.pub" | ssh $SSH_OPTION "${1}@${SSH_HOST}" "chmod 755 . && mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat > ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+    clear
+}
+
+new_ssh_conf() {
+    local -r file="$1"
+
+    cat > "$file" << END
+Host $SSH_HOST
+    HostName $IP
+    Port $PORT
+    PubkeyAcceptedKeyTypes=+ssh-rsa
+END
 }
 
 get_pass() {
@@ -62,7 +75,7 @@ connect() {
         exit 1
     fi
     get_pass "$1"
-    ssh "${1}@${IP}" -p "$PORT" "$2"
+    ssh $SSH_OPTION "${1}@${SSH_HOST}" "$2"
 }
 
 send() {
@@ -71,7 +84,7 @@ send() {
         exit 1
     fi
     get_pass "$1"
-    scp -P "$PORT" "$2" "${1}@${IP}:/home/user/${1}"
+    scp $SSH_OPTION "$2" "${1}@${SSH_HOST}:/home/user/${1}"
 }
 
 main "$@"
