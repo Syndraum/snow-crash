@@ -6,6 +6,8 @@ main() {
         connect "$1" "$2"
     elif [[ "$0" == "./send" ]]; then
         send "$1" "$2"
+    elif [[ "$0" == "./receive" ]]; then
+        receive "$1" "$2"
     fi
 }
 
@@ -85,6 +87,15 @@ send() {
     fi
     get_pass "$1"
     scp $SSH_OPTION "$2" "${1}@${SSH_HOST}:/home/user/${1}"
+}
+
+receive() {
+    if [[ -z "$2" ]]; then
+        printf "usage; receive login file\n"
+        exit 1
+    fi
+    get_pass "$1"
+    scp $SSH_OPTION "${1}@${SSH_HOST}:/home/user/${1}/${2}" .
 }
 
 main "$@"
