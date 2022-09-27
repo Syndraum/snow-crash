@@ -11,5 +11,7 @@
 #--------- SCP ---------
 
 1. `scp -P 4242 ./level06/Ressources/payload level06@192.168.56.102:/tmp`
+   `./send level06 ./level06/Ressources/payload`
 
 2. `echo './level06 /tmp/payload 'getflag'`
+   `echo './level06 ./payload' getflag`
