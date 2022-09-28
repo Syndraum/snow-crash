@@ -12,7 +12,7 @@ main() {
 }
 
 declare -r SSH_HOST="snow-crash"
-declare -r IP="192.168.56.101"
+declare -r IP="192.168.56.102"
 declare -r PORT=4242
 declare -r SSH_DIR="${HOME}/.ssh/"
 declare -r SSH_CONFIG=".config"
