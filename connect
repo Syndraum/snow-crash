@@ -81,12 +81,17 @@ connect() {
 }
 
 send() {
+    local file="$2"
+
     if [[ -z "$2" ]]; then
-        printf "usage; send login file\n"
+        printf "usage; send login file\n  \n"
         exit 1
     fi
+    if [[ ! "$file" == *"/"* ]]; then
+        file="./${1}/Ressources/${file}"
+    fi
     get_pass "$1"
-    scp $SSH_OPTION "$2" "${1}@${SSH_HOST}:/home/user/${1}"
+    scp $SSH_OPTION "$file" "${1}@${SSH_HOST}:/home/user/${1}"
 }
 
 receive() {
