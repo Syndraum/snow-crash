@@ -1,5 +1,7 @@
-1. `gdb ./level08` `disassemble main`
+1. `gdb ./level08` 
 
+2. `disassemble main`
+   ```bash
     # main
     # if argc == 1
     #   exit
@@ -11,16 +13,23 @@
     #   write stdout
     # catch
     #   exit
+    ```
 
-2. `./level08 token`
+3. `./level08 token`
+   ```
    You may not access 'token'
+   ```
 
-3. `chmod u+w .`
+4. `chmod u+w .`
 
-4. `mv token notToken`
+5. `mv token notToken`
 
-5. `./level08 notToken`
+6. `./level08 notToken`
+   ```
    quif5eloekouj29ke0vouxean
+   ```
 
-6. `su flag08` - pass : quif5eloekouj29ke0vouxean
+7. `su flag08` pass : quif5eloekouj29ke0vouxean
+   ```bash
    getflag
+   ```

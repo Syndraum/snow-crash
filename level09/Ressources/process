@@ -1,8 +1,0 @@
-1. `./level token`
-
-2. `scp`
-
-3. `/reverse $(cat token)`
-
-4. `su flag09` - pass : f3iji1ju5yuevaus41q1afiuq
-   getflag

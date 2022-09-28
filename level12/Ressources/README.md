@@ -1,3 +1,9 @@
+### External
+```
+Bash    GETFLAG
+```
+
+### Process
 1. `./send level12 ./level12/Ressources/GETFLAG`
 
 2. `cp GETFLAG /tmp`

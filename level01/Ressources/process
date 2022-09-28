@@ -1,9 +1,0 @@
-1. `cat /etc/passwd | grep flag01`
-   flag01:42hDRfypTqqnw:3001:3001::/home/flag/flag01:/bin/bash
-
-2. `make && ./brute 42hDRfypTqqnw`
-   target: 42hDRfypTqqnw - salt: 42
-   find - pass: abcdefg
-
-3. `su flag01` - pass : abcdefg
-   getflag

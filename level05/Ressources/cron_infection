@@ -24,7 +24,7 @@ main() {
         sleep 5
     done
     printf "file found, open it\n"
-    cat $output | less
+    cat $output
 }
 
 exit_scrip() {

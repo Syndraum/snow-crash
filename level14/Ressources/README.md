@@ -1,6 +1,7 @@
 1. `gdb getflag`
 
 2. `disassemble main`
+   ```s
    0x08048afd <+439>:	call   0x80484b0 <getuid@plt>
    ...
    0x08048bb6 <+624>:	cmp    $0xbc6,%eax
@@ -10,7 +11,12 @@
    0x08048dea <+1188>:	mov    %eax,%ebx
    0x08048dec <+1190>:	movl   $0x8049220,(%esp) #str
    0x08048df3 <+1197>:	call   0x8048604 <ft_des>
+   ```
 
-3. `break main` `run` `print ft_des(0x8049220, 0x804b060)`
+3. `break main`
 
-4. `x/s $1`
+4. `run`
+
+5. `print ft_des(0x8049220, 0x804b060)`
+
+6. `x/s $1`
