@@ -8,7 +8,7 @@
 BASH  race
 ```
 
-### Process
+### Exploit
 1. `./connect level09 nc -lk 127.0.0.1 6969`
 
 2. `./send level10 race`

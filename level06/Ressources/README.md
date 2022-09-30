@@ -1,3 +1,11 @@
+### Documentation
+[preg_replace vulnerability](https://captainnoob.medium.com/command-execution-preg-replace-php-function-exploit-62d6f746bda4)
+
+[Back references](https://www.php.net/manual/en/regexp.reference.back-references.php)
+
+[Curly syntax](https://www.php.net/manual/en/language.types.string.php#language.types.string.parsing.complex)
+
+### Exploit
 1. `ls`
    ```
    level06  level06.php

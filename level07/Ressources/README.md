@@ -1,3 +1,7 @@
+### Documentation
+*None*
+
+### Exploit
 1. `./level07`
    ```bash
    level07
@@ -5,7 +9,8 @@
 
 2. `xdd ./level07 | less`
    ```
-   asprintf.getenv
+   asprintf.getenv.
+   system
    [...]
    LOGNAME./bin/echo %s
    ```

@@ -8,7 +8,7 @@ MAKEFILE Makefile
 C        brute.c
 ```
 
-### Process
+### Exploit
 1. `cat /etc/passwd | grep flag01`
    ```bash
    flag01:42hDRfypTqqnw:3001:3001::/home/flag/flag01:/bin/bash

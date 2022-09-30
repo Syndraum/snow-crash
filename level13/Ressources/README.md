@@ -6,7 +6,7 @@
 c   lib.c
 ```
 
-### Process
+### Exploit
 . `./send level13 ./level13/Ressources/lib.c`
 
 2. `gcc -shared lib.c -o lib.so`

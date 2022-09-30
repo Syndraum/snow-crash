@@ -1,9 +1,12 @@
+### Documentation
+[Pathname expension](https://datacadamia.com/lang/bash/pathname_expansion)
+
 ### External
 ```
 Bash    GETFLAG
 ```
 
-### Process
+### Exploit
 1. `./send level12 ./level12/Ressources/GETFLAG`
 
 2. `cp GETFLAG /tmp`

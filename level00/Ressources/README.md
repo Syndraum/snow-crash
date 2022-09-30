@@ -1,9 +1,12 @@
+### Documentation
+[Permission matters](https://tbhaxor.com/exploiting-file-permissions-misconfigurations/)
+
 ### External
 ```
 BASH  rot
 ```
 
-### Process
+### Exploit
 1. `find / -user flag00 2> /dev/null`
    ```bash
    /usr/sbin/john

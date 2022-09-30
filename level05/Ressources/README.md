@@ -6,7 +6,7 @@
 BASH    cron_infection
 ```
 
-### Process
+### Exploit
 1. You have new mail.
 
 2. `cat /var/mail/level05`

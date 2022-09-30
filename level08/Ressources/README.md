@@ -1,3 +1,7 @@
+### Documentation
+[Linux Permissions](https://ryanstutorials.net/linuxtutorial/permissions.php#directories)
+
+### Exploit
 1. `gdb ./level08` 
 
 2. `disassemble main`
